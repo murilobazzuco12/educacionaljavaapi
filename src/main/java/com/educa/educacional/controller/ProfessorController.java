@@ -1,5 +1,6 @@
 package com.educa.educacional.controller;
 
+import com.educa.educacional.DTO.ProfessorRequestDTO;
 import com.educa.educacional.model.Professor;
 import com.educa.educacional.repository.ProfessorRepository;
 import jakarta.validation.Valid;
@@ -18,20 +19,23 @@ public class ProfessorController {
 
     // Listar todos os professores
     @GetMapping
-    public List<Professor> listarTodos() {
-        return professorRepository.findAll();
+    public ResponseEntity<List<Professor>> listarTodos() {
+        List<Professor> professores = professorRepository.findAll();
+        return ResponseEntity.ok(professores);
     }
 
-    // Criar um novo professor
     @PostMapping
-    public ResponseEntity<?> criar(@Valid @RequestBody Professor professor) {
-        // Verificar se o professor com CPF já existe (ajuste conforme o campo único)
-        if (professorRepository.existsByCpf(professor.getCpf())) {
-            return ResponseEntity.badRequest().body("Erro: CPF já cadastrado!");
-        }
-        Professor novoProfessor = professorRepository.save(professor);
-        return ResponseEntity.ok(novoProfessor);
+    public Professor save(@RequestBody ProfessorRequestDTO dto) {
+        Professor professor = new Professor();
+        professor.setNome(dto.nome());
+        professor.setEmail(dto.email());
+        professor.setTelefone(dto.telefone());
+        professor.setEspecialidade(dto.especialidade());
+        professor.setCpf(dto.cpf());
+
+        return professorRepository.save(professor);
     }
+
 
     // Buscar professor por ID
     @GetMapping("/{id}")

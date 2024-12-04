@@ -1,8 +1,8 @@
 package com.educa.educacional.model;
 
-
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "matriculas")
@@ -20,7 +20,7 @@ public class Matricula {
     @JoinColumn(name = "turma_id", nullable = false)
     private Turma turma;
 
-    @OneToMany(mappedBy = "matricula", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "matricula", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Nota> notas;
 
     // Getters e Setters
@@ -46,6 +46,38 @@ public class Matricula {
     }
 
     public void setTurma(Turma turma) {
+        this.turma = turma;
     }
 
+    public List<Nota> getNotas() {
+        return notas;
+    }
+
+    public void setNotas(List<Nota> notas) {
+        this.notas = notas;
+    }
+
+    // Métodos Utilitários
+
+    @Override
+    public String toString() {
+        return "Matricula{" +
+                "id=" + id +
+                ", aluno=" + (aluno != null ? aluno.getNome() : "null") +
+                ", turma=" + (turma != null ? turma.getNome() : "null") +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Matricula matricula = (Matricula) o;
+        return Objects.equals(id, matricula.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

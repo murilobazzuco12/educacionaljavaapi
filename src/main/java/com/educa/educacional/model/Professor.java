@@ -1,8 +1,6 @@
 package com.educa.educacional.model;
 
-
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
@@ -25,13 +23,13 @@ public class Professor {
     @Column(nullable = false, length = 100)
     private String especialidade;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, unique = true, length = 11)
     private String cpf;
 
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL)
-    private List<Disciplina> disciplinas;
+
 
     // Getters e Setters
+
     public Integer getId() {
         return id;
     }
@@ -79,4 +77,5 @@ public class Professor {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
+
 }

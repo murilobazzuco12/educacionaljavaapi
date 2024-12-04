@@ -1,8 +1,6 @@
 package com.educa.educacional.model;
 
-
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -25,8 +23,8 @@ public class Nota {
     @Column(name = "data_lancamento", nullable = false)
     private LocalDate dataLancamento;
 
-    @Column(nullable = false, precision = 5, scale = 2)
-    private Integer valor;
+    @Column(nullable = false, precision = 5, scale = 2)  // Ex: valor máximo 999.99
+    private BigDecimal valor;
 
     // Getters e Setters
 
@@ -54,7 +52,6 @@ public class Nota {
         this.disciplina = disciplina;
     }
 
-
     public LocalDate getDataLancamento() {
         return dataLancamento;
     }
@@ -63,11 +60,11 @@ public class Nota {
         this.dataLancamento = dataLancamento;
     }
 
-    public Integer getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Integer valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 }

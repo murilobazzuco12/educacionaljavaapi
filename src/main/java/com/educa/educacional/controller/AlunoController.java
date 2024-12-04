@@ -1,5 +1,6 @@
 package com.educa.educacional.controller;
 
+import com.educa.educacional.DTO.AlunoRequestDTO;
 import com.educa.educacional.model.Aluno;
 import com.educa.educacional.repository.AlunoRepository;
 import jakarta.validation.Valid;
@@ -22,15 +23,17 @@ public class AlunoController {
         return alunoRepository.findAll();
     }
 
-    // Criar novo aluno
     @PostMapping
-    public ResponseEntity<?> criar(@Valid @RequestBody Aluno aluno) {
-        if (alunoRepository.existsByMatricula(aluno.getMatricula())) {
-            return ResponseEntity.badRequest().body("Erro: Matrícula já cadastrada!");
-        }
-        Aluno novoAluno = alunoRepository.save(aluno);
-        return ResponseEntity.ok(novoAluno);
+    public Aluno save(@RequestBody AlunoRequestDTO dto) {
+        Aluno aluno = new Aluno();
+        aluno.setNome(dto.nome());
+        aluno.setEmail(dto.email());
+        aluno.setMatricula(dto.matricula());
+        aluno.setDataNascimento(dto.dataNascimento());
+
+        return alunoRepository.save(aluno);
     }
+
 
     // Buscar aluno por ID
     @GetMapping("/{id}")
@@ -48,14 +51,13 @@ public class AlunoController {
         }
 
         // Verificar se a matrícula já existe para outro aluno
-        if (!alunoRepository.existsByMatriculaAndIdNot(aluno.getMatricula(), id)) {
-            aluno.setId(id);
-            Aluno alunoAtualizado = alunoRepository.save(aluno);
-            return ResponseEntity.ok(alunoAtualizado);
-        } else {
+        if (alunoRepository.existsByMatriculaAndIdNot(aluno.getMatricula(), id)) {
             return ResponseEntity.badRequest().body("Erro: Matrícula já cadastrada para outro aluno!");
         }
 
+        aluno.setId(id);
+        Aluno alunoAtualizado = alunoRepository.save(aluno);
+        return ResponseEntity.ok(alunoAtualizado);
     }
 
     // Deletar aluno

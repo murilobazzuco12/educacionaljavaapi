@@ -6,5 +6,8 @@ import com.educa.educacional.model.Turma;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MatriculaRepository extends JpaRepository<Matricula, Integer> {
-    boolean existsByAlunoAndTurma(Aluno aluno, Turma turma);
+
+    boolean existsByAlunoAndTurma(Aluno aluno, Turma turma);  // Verifica duplicidade na criação
+
+    boolean existsByAlunoAndTurmaAndIdNot(Aluno aluno, Turma turma, Integer id);  // Verifica duplicidade na atualização
 }

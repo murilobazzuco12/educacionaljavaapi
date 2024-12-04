@@ -1,6 +1,8 @@
 package com.educa.educacional.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,14 +19,13 @@ public class Curso {
     @Column(nullable = false, unique = true, length = 20)
     private String codigo;
 
+    @Min(0)  // Garante que a carga horária não seja negativa
     @Column(nullable = false)
     private int cargaHoraria;
 
-    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
-    private List<Disciplina> disciplinas;
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Disciplina> disciplinas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
-    private List<Turma> turmas;
 
     // Getters e Setters
 
@@ -58,5 +59,13 @@ public class Curso {
 
     public void setCargaHoraria(int cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
     }
 }

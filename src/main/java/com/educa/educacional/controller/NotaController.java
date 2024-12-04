@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class NotaController {
     // Criar uma nova nota
     @PostMapping
     public ResponseEntity<?> criar(@Valid @RequestBody Nota nota) {
-        if (nota.getValor() < 0 || nota.getValor() > 10) {
+        if (nota.getValor().compareTo(BigDecimal.ZERO) < 0 || nota.getValor().compareTo(BigDecimal.TEN) > 0) {
             return ResponseEntity.badRequest().body("Erro: O valor da nota deve estar entre 0 e 10.");
         }
         Nota novaNota = notaRepository.save(nota);
@@ -47,7 +48,7 @@ public class NotaController {
             return ResponseEntity.notFound().build();
         }
 
-        if (nota.getValor() < 0 || nota.getValor() > 10) {
+        if (nota.getValor().compareTo(BigDecimal.ZERO) < 0 || nota.getValor().compareTo(BigDecimal.TEN) > 0) {
             return ResponseEntity.badRequest().body("Erro: O valor da nota deve estar entre 0 e 10.");
         }
 

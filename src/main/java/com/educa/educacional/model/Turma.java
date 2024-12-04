@@ -17,11 +17,14 @@ public class Turma {
     @Column(nullable = false)
     private int semestre;
 
+    @Column(nullable = false)
+    private String nome;
+
     @ManyToOne
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;
 
-    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Matricula> matriculas;
 
     // Getters e Setters
@@ -56,5 +59,32 @@ public class Turma {
 
     public void setCurso(Curso curso) {
         this.curso = curso;
+    }
+
+    public List<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public void setMatriculas(List<Matricula> matriculas) {
+        this.matriculas = matriculas;
+    }
+
+    // Método utilitário para representação textual
+    @Override
+    public String toString() {
+        return "Turma{" +
+                "id=" + id +
+                ", ano=" + ano +
+                ", semestre=" + semestre +
+                ", curso=" + (curso != null ? curso.getNome() : "null") +
+                '}';
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 }
